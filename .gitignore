@@ -1,0 +1,26 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# dotenv environment files
+.env
+
+# TypeScript
+dist/
+build/
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+
+# IDE folders
+.vscode/
+.idea/
+
+# OS system files
+.DS_Store
+Thumbs.db
