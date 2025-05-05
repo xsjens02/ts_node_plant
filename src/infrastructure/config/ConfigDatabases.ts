@@ -57,5 +57,4 @@ export async function configure() {
     container.registerSingleton<IPersistence<IoTConfig>>('IoTConfigMongo', IoTConfigMongo);
 
     // ----- Seeding -----
-    //await populateGenericPlants();
 }
