@@ -1,10 +1,10 @@
 import express from 'express';
 import { container } from 'tsyringe';
-import { ISignUpController } from '../infrastructure/controllers/interfaces/ISignUpController.js';
+import { ISignUpRController } from '../infrastructure/controllers/rest/interfaces/ISignUpRController.js';
 
 export function signUpRoutes() {
     const router = express.Router();
-    const sigUpController = container.resolve<ISignUpController>('SignUpController');
+    const sigUpController = container.resolve<ISignUpRController>('SignUpRController');
 
     router.route("/")
         .post((req, res) => sigUpController.signAndLogin(req, res)); 

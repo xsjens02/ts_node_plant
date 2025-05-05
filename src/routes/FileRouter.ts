@@ -1,10 +1,10 @@
 import express from 'express';
 import { container } from 'tsyringe';
-import { IFileController } from '../infrastructure/controllers/interfaces/IFileController.js';
+import { IFileRController } from '../infrastructure/controllers/rest/interfaces/IFileRController.js';
 
 export function fileRoutes() {
     const router = express.Router();
-    const fileController = container.resolve<IFileController>('FileController');
+    const fileController = container.resolve<IFileRController>('FileRController');
 
     router.route("/")
         .post((req, res) => fileController.upload(req, res)) 

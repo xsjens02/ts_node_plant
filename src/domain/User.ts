@@ -4,6 +4,7 @@ import { Identification } from "./Identification.js";
 export interface User extends Identification {
     name: string;
     role: EAuthRole;
+    email: string;
     userName: string;
     password: string; 
 }

@@ -1,11 +1,11 @@
 import express from 'express';
 import { container } from 'tsyringe';
-import { IController } from '../infrastructure/controllers/interfaces/IController.js';
+import { IRestController } from '../infrastructure/controllers/rest/interfaces/IRestController.js';
 import { User } from '../domain/User.js';
 
 export function userRoutes() {
     const router = express.Router();
-    const userController = container.resolve<IController<User>>('UserController');
+    const userController = container.resolve<IRestController<User>>('UserRController');
 
     router.route("/")
         .post((req, res) => userController.create(req, res)) 

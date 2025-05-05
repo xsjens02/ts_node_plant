@@ -21,6 +21,7 @@ export class UserMongo extends BaseMongo<User> implements IUserPersistence {
         const adminUser: User = {
             name: "initUser",
             role: EAuthRole.ADMIN,
+            email: "email@example.com",
             userName: "admin",
             password: "$2b$10$qVsw9jfky.ybBmPjej/MUOT86iP50iaBQWnnK/h2LwxJUdU6SszOi"
         }

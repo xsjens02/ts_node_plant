@@ -1,21 +1,37 @@
 import { container } from "tsyringe";
-import { ProductController } from "../controllers/ProductController.js";
-import { UserController } from "../controllers/UserController.js";
-import { IController } from "../controllers/interfaces/IController.js";
+import { IRestController } from "../controllers/rest/interfaces/IRestController.js";
 import { User } from "../../domain/User.js";
-import { Product } from "../../domain/Product.js";
-import { ILoginController } from "../controllers/interfaces/ILoginController.js";
-import { LoginController } from "../controllers/LoginController.js";
-import { IFileController } from "../controllers/interfaces/IFileController.js";
-import { FileController } from "../controllers/FileController.js";
-import { ISignUpController } from "../controllers/interfaces/ISignUpController.js";
-import { SignUpController } from "../controllers/SignUpController.js";
+import { ILoginRController } from "../controllers/rest/interfaces/ILoginRController.js";
+import { IFileRController } from "../controllers/rest/interfaces/IFileRController.js";
+import { ISignUpRController } from "../controllers/rest/interfaces/ISignUpRController.js";
+import { FileRController } from "../controllers/rest/FileRController.js";
+import { LoginRController } from "../controllers/rest/LoginRController.js";
+import { SignUpRController } from "../controllers/rest/SignUpRController.js";
+import { UserRController } from "../controllers/rest/UserRController.js";
+import { CustomPlant } from "../../domain/CustomPlant.js";
+import { GenericPlant } from "../../domain/GenericPlant.js";
+import { Metric } from "../../domain/Metric.js";
+import { IoTConfig } from "../../domain/IoTConfig.js";
+import { CustomPlantRController } from "../controllers/rest/CustomPlantRController.js";
+import { GenericPlantRController } from "../controllers/rest/GenericPlantRController.js";
+import { MetricRController } from "../controllers/rest/MetricRController.js";
+import { IoTConfigRController } from "../controllers/rest/IoTConfigRController.js";
+import { ISocketController } from "../controllers/websocket/interfaces/ISocketController.js";
+import { MetricSController } from "../controllers/websocket/MetricSController.js";
+import { IoTConfigSController } from "../controllers/websocket/IoTConfigSController.js";
 
 export function configure() {
-    // ----- Controller Instances -----
-    container.registerSingleton<ISignUpController>('SignUpController', SignUpController);
-    container.registerSingleton<ILoginController>('LoginController', LoginController);
-    container.registerSingleton<IController<User>>('UserController', UserController);
-    container.registerSingleton<IController<Product>>('ProductController', ProductController);
-    container.registerSingleton<IFileController>('FileController', FileController);
+    // ----- Rest Controller Instances -----
+    container.registerSingleton<ISignUpRController>('SignUpRController', SignUpRController);
+    container.registerSingleton<ILoginRController>('LoginRController', LoginRController);
+    container.registerSingleton<IRestController<User>>('UserRController', UserRController);
+    container.registerSingleton<IFileRController>('FileRController', FileRController);
+    container.registerSingleton<IRestController<CustomPlant>>('CustomPlantRController', CustomPlantRController);
+    container.registerSingleton<IRestController<GenericPlant>>('GenericPlantRController', GenericPlantRController);
+    container.registerSingleton<IRestController<Metric>>('MetricRController', MetricRController);
+    container.registerSingleton<IRestController<IoTConfig>>('IoTConfigRController', IoTConfigRController);
+
+    // ----- Websocket Controller Instances -----
+    container.registerSingleton<ISocketController<Metric>>('MetricSController', MetricSController);
+    container.registerSingleton<ISocketController<IoTConfig>>('IoTConfigSController', IoTConfigSController);
 }
