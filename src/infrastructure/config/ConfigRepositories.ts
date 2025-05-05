@@ -6,16 +6,16 @@ import { CustomPlantRepository } from "../repositories/CustomPlantRepository.js"
 import { GenericPlantRepository } from "../repositories/GenericPlantRepository.js";
 import { MetricRepository } from "../repositories/MetricRepository.js";
 import { IoTConfigRepository } from "../repositories/IoTConfigRepository.js";
-import { CustomPlant } from "../../domain/CustomPlant.js";
 import { GenericPlant } from "../../domain/GenericPlant.js";
 import { IoTConfig } from "../../domain/IoTConfig.js";
-import { Metric } from "../../domain/Metric.js";
+import { ICustomPlantRepository } from "../repositories/interfaces/ICustomPlantRepository.js";
+import { IMetricRepository } from "../repositories/interfaces/IMetricRepository.js";
 
 export function configure() {
     // ----- Repository Instances -----
     container.registerSingleton<IUserRepository>('UserRepository', UserRepository);
-    container.registerSingleton<IRepository<CustomPlant>>('CustomPlantRepository', CustomPlantRepository);
+    container.registerSingleton<ICustomPlantRepository>('CustomPlantRepository', CustomPlantRepository);
     container.registerSingleton<IRepository<GenericPlant>>('GenericPlantRepository', GenericPlantRepository);
-    container.registerSingleton<IRepository<Metric>>('MetricRepository', MetricRepository);
+    container.registerSingleton<IMetricRepository>('MetricRepository', MetricRepository);
     container.registerSingleton<IRepository<IoTConfig>>('IoTConfigRepository', IoTConfigRepository);
 }

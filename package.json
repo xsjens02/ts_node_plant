@@ -5,7 +5,7 @@
   "main": "dist/launch.js",
   "type": "module",
   "scripts": {
-    "build": "tsc && cp package.json dist/package.json",
+    "build": "tsc && cp package.json dist/package.json && cp src/infrastructure/databases/seed/*.json dist/infrastructure/databases/seed/",
     "start": "node dist/launch.js"
   },
   "keywords": [],

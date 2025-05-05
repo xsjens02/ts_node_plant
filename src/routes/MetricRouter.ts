@@ -1,11 +1,10 @@
 import express from 'express';
 import { container } from 'tsyringe';
-import { IRestController } from '../infrastructure/controllers/rest/interfaces/IRestController.js';
-import { Metric } from '../domain/Metric.js';
+import { IMetricRController } from '../infrastructure/controllers/rest/interfaces/IMetricRController.js';
 
 export function metricRoutes() {
     const router = express.Router();
-    const metricController = container.resolve<IRestController<Metric>>('MetricRController');
+    const metricController = container.resolve<IMetricRController>('MetricRController');
 
     router.route("/")
         .post((req, res) => metricController.create(req, res)) 
@@ -15,6 +14,12 @@ export function metricRoutes() {
         .get((req, res) => metricController.get(req, res)) 
         .put((req, res) => metricController.update(req, res)) 
         .delete((req, res) => metricController.delete(req, res));
+    
+    router.route("/plant/:id")
+        .get((req, res) => metricController.getAllByCustomPlant(req, res));
+    
+    router.route("/plant/latest/:id")
+        .get((req, res) => metricController.getLatestByCustomPlant(req, res));
     
     return router;
 }

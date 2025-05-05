@@ -19,6 +19,8 @@ import { IoTConfigRController } from "../controllers/rest/IoTConfigRController.j
 import { ISocketController } from "../controllers/websocket/interfaces/ISocketController.js";
 import { MetricSController } from "../controllers/websocket/MetricSController.js";
 import { IoTConfigSController } from "../controllers/websocket/IoTConfigSController.js";
+import { ICustomPlantRController } from "../controllers/rest/interfaces/ICustomPlantRController.js";
+import { IMetricRController } from "../controllers/rest/interfaces/IMetricRController.js";
 
 export function configure() {
     // ----- Rest Controller Instances -----
@@ -26,9 +28,9 @@ export function configure() {
     container.registerSingleton<ILoginRController>('LoginRController', LoginRController);
     container.registerSingleton<IRestController<User>>('UserRController', UserRController);
     container.registerSingleton<IFileRController>('FileRController', FileRController);
-    container.registerSingleton<IRestController<CustomPlant>>('CustomPlantRController', CustomPlantRController);
+    container.registerSingleton<ICustomPlantRController>('CustomPlantRController', CustomPlantRController);
     container.registerSingleton<IRestController<GenericPlant>>('GenericPlantRController', GenericPlantRController);
-    container.registerSingleton<IRestController<Metric>>('MetricRController', MetricRController);
+    container.registerSingleton<IMetricRController>('MetricRController', MetricRController);
     container.registerSingleton<IRestController<IoTConfig>>('IoTConfigRController', IoTConfigRController);
 
     // ----- Websocket Controller Instances -----

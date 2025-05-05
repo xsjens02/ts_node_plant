@@ -23,6 +23,10 @@ import { CustomPlantRedis } from "../databases/redis/CustomPlantRedis.js";
 import { GenericPlantRedis } from "../databases/redis/GenericPlantRedis.js";
 import { MetricRedis } from "../databases/redis/MetricRedis.js";
 import { IoTConfigRedis } from "../databases/redis/IoTConfigRedis.js";
+import { IMetricPersistence } from "../databases/interfaces/persistence/IMetricPersistence.js";
+import { ICustomPlantPersistence } from "../databases/interfaces/persistence/ICustomPlantPersistence.js";
+import { populatePersistenceDb } from "../databases/seed/populatePersistenceDb.js";
+import { User } from "../../domain/User.js";
 
 export async function configure() {
     // ----- Redis Setup -----
@@ -51,10 +55,19 @@ export async function configure() {
 
     // ----- Persistence Mongo Instances -----
     container.registerSingleton<IUserPersistence>('UserMongo', UserMongo);
-    container.registerSingleton<IPersistence<CustomPlant>>('CustomPlantMongo', CustomPlantMongo);
+    container.registerSingleton<ICustomPlantPersistence>('CustomPlantMongo', CustomPlantMongo);
     container.registerSingleton<IPersistence<GenericPlant>>('GenericPlantMongo', GenericPlantMongo);
-    container.registerSingleton<IPersistence<Metric>>('MetricMongo', MetricMongo);
+    container.registerSingleton<IMetricPersistence>('MetricMongo', MetricMongo);
     container.registerSingleton<IPersistence<IoTConfig>>('IoTConfigMongo', IoTConfigMongo);
 
     // ----- Seeding -----
+    await populatePersistenceDb<User>(
+        'UserMongo',
+        'init_user.json'
+    )
+
+    await populatePersistenceDb<GenericPlant>(
+        'GenericPlantMongo',
+        'generic_plants.json'
+    )
 }

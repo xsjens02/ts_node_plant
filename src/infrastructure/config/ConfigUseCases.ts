@@ -10,19 +10,18 @@ import { CustomPlantManager } from "../../application/useCaseManagers/CustomPlan
 import { GenericPlantManager } from "../../application/useCaseManagers/GenericPlantManager.js";
 import { MetricManager } from "../../application/useCaseManagers/MetricManager.js";
 import { IoTConfigManager } from "../../application/useCaseManagers/IoTConfigManager.js";
-import { CustomPlant } from "../../domain/CustomPlant.js";
 import { GenericPlant } from "../../domain/GenericPlant.js";
 import { IoTConfig } from "../../domain/IoTConfig.js";
-import { Metric } from "../../domain/Metric.js";
+import { ICustomPlantManager } from "../../application/useCaseManagers/interfaces/ICustomPlantManager.js";
+import { IMetricManager } from "../../application/useCaseManagers/interfaces/IMetricManager.js";
 
 export function configure() {
     // ----- Use Case Manager Instances -----
     container.registerSingleton<IUseCaseManager<User>>('UserUseCaseManager', UserManager);
-    container.registerSingleton<IUseCaseManager<CustomPlant>>('CustomPlantUseCaseManager', CustomPlantManager);
+    container.registerSingleton<ICustomPlantManager>('CustomPlantUseCaseManager', CustomPlantManager);
     container.registerSingleton<IUseCaseManager<GenericPlant>>('GenericPlatUseCaseManager', GenericPlantManager);
-    container.registerSingleton<IUseCaseManager<Metric>>('MetricUseCaseManager', MetricManager);
+    container.registerSingleton<IMetricManager>('MetricUseCaseManager', MetricManager);
     container.registerSingleton<IUseCaseManager<IoTConfig>>('IoTConfigUseCaseManager', IoTConfigManager);
-
     container.registerSingleton<IFileManager>('FileManager', FileManager);
 
     // ----- Use Case Instances -----
