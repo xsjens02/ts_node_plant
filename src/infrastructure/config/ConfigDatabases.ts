@@ -23,7 +23,6 @@ import { CustomPlantRedis } from "../databases/redis/CustomPlantRedis.js";
 import { GenericPlantRedis } from "../databases/redis/GenericPlantRedis.js";
 import { MetricRedis } from "../databases/redis/MetricRedis.js";
 import { IoTConfigRedis } from "../databases/redis/IoTConfigRedis.js";
-import { populateGenericPlants } from "../databases/seed/populateGenericPlants.js";
 
 export async function configure() {
     // ----- Redis Setup -----
