@@ -16,7 +16,7 @@ export function configure() {
     const jwtService: IJWTService = JWTServiceFactory.create({
         tokenType: ETokenType.STANDARD,
         secretKey: process.env.TOKEN_SECRET,
-        expirationTime: ETokenExpire.FIVE_MIN,
+        expirationTime: ETokenExpire.ONE_DAY,
         issuer: process.env.TOKEN_ISSUER,
         audience: process.env.TOKEN_AUDIENCE
     });
@@ -25,7 +25,7 @@ export function configure() {
     // ----- Cookie Setup -----
     const cookieService: ICookieService = CookieServiceFactory.create({
         cookieType: ECookieType.STANDARD,
-        expirationTime: ECookieExpire.FIVE_MIN,
+        expirationTime: ECookieExpire.ONE_DAY,
     });
     container.registerInstance<ICookieService>('CookieService', cookieService);
     container.registerInstance<string>('LoginCookieName', process.env.LOGIN_COOKIE_NAME);
