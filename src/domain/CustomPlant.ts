@@ -8,5 +8,5 @@ export interface CustomPlant extends Identification {
     imageUrl: string;
     potVolume: number;
     requiredWater: number;
-    latestMetric: Metric;
+    latestMetric?: Metric;
 }

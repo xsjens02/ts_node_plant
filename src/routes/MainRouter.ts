@@ -16,7 +16,11 @@ export function createRoutes() {
    const routes = express();
 
    routes.use(fileUpload());
-   routes.use(cors());
+   routes.use(cors({
+      origin: '*',  
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization']
+    }));
    routes.use(cookieParser());
    routes.use(bodyParser.urlencoded({ extended: false }));
    routes.use(bodyParser.json());

@@ -4,7 +4,12 @@ import { IoTConfigSocket } from './IoTConfigSocket.js';
 import { subscribeSocket } from './SubscribeSocket.js';
 
 export function setupWebSocket(server: any) {
-    const io = new Server(server)
+    const io = new Server(server, {
+        cors: {
+          origin: "*", 
+          methods: ["GET", "POST"] 
+        }
+      });
 
     io.on('connection', (socket) => {
         console.log('New client connected:', socket.id);
