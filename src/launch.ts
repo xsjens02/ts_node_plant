@@ -11,7 +11,7 @@ initApp().then(() => {
 
     setupWebSocket(server);
 
-    server.listen(port, () =>{
+    server.listen(port, '0.0.0.0', () =>{
         console.log('This server is listening at port:' + port);
     });
 });
