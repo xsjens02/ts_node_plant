@@ -67,7 +67,6 @@ def connect():
         "customPlantId": custom_plant_id,
         "dateTimeStamp": datetime.datetime.now().isoformat(),
         "moistureLevel": 42,
-        "temperatur": 21.5,
         "waterLevel": "medium",
         "lastWatered": datetime.datetime.now().isoformat()
     }

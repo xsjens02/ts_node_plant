@@ -5,7 +5,6 @@ export interface Metric extends Identification {
     customPlantId: ObjectId;
     dateTimeStamp: Date;
     moistureLevel: number;
-    temperatur: number;
     waterLevel: string;
     lastWatered: Date;
 }
