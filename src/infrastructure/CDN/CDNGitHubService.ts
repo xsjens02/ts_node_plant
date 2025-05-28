@@ -5,8 +5,13 @@ import { CDNGitHubConfig } from "./config/CDNGithubConfig.js"
 
 @injectable()
 export class CDNGitHubService implements ICDNService {
+    // Personal Access Token for GitHub API authentication
     private PAT: string;
+
+    // Base URL for GitHub API calls
     private apiURL: string;
+
+    // URL for accessing the GitHub Pages site (public URL of uploaded files)
     private pagesURL: string;
 
     constructor(@inject('CDNGitHubConfig') config: CDNGitHubConfig) {
@@ -15,6 +20,11 @@ export class CDNGitHubService implements ICDNService {
         this.pagesURL = config.pagesURL;
     }
 
+    /**
+     * Uploads a file to GitHub repo by converting it to base64 and
+     * sending a PUT request to the GitHub content API.
+     * Returns the public URL of the uploaded file on success.
+     */
     async upload(file: UploadedFile): Promise<string> {
         const fileName = file.name;
         const contentBase64 = file.data.toString("base64");
@@ -22,7 +32,7 @@ export class CDNGitHubService implements ICDNService {
         const url = `${this.apiURL}${fileName}`;
         const body = JSON.stringify({
             message: `Upload ${fileName}`,
-		    content: contentBase64,
+            content: contentBase64,
         });
 
         return fetch(url, {
@@ -40,10 +50,18 @@ export class CDNGitHubService implements ICDNService {
                 throw new Error(`GitHub upload failed: ${response.status} ${txt}`);
             }
 
+            // Return the public URL where file is accessible
             return `${this.pagesURL}${fileName}`;
         });
     }
 
+    /**
+     * Deletes a file from GitHub repo by:
+     * - Extracting file path from the given public URL
+     * - Getting the file's SHA hash required by GitHub API
+     * - Sending a DELETE request to the GitHub content API
+     * Returns true if deletion was successful.
+     */
     async delete(fileURL: string): Promise<boolean> {
         const pathName = new URL(fileURL).pathname;
         const filePathInRepo = pathName.replace(/^\/[^/]+\/[^/]+\//, "");
@@ -72,6 +90,11 @@ export class CDNGitHubService implements ICDNService {
         return response.ok;
     }
 
+    /**
+     * Gets the SHA hash of a file in the repo, which is needed
+     * to delete or update a file via GitHub API.
+     * Returns the SHA string or null if file not found.
+     */
     private async getFileSha(filePath: string): Promise<string | null> {
         const url = `${this.apiURL}${filePath}`;
 

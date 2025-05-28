@@ -7,25 +7,32 @@ import { IUserRepository } from "./interfaces/IUserRepository.js";
 
 @injectable()
 export class UserRepository extends BaseRepository<User> implements IUserRepository{
+    // Cache service for User entities
     private userCache: IUserCache;
+    // Persistence service for User entities (e.g., database access)
     private userPersistence: IUserPersistence;
 
     constructor(
         @inject('UserRedis') userCache: IUserCache, 
         @inject('UserMongo') userPersistence: IUserPersistence
     ) {
+        // Pass cache and persistence to base repository
         super(userCache, userPersistence);
         this.userCache = userCache;
         this.userPersistence = userPersistence;
     }
 
+    /**
+     * Retrieve a User by username.
+     * Checks cache first; if not found, fetches from persistence and caches the result.
+     */
     async getByUsername(username: string): Promise<User | null> {
         const cachedUser = await this.userCache.getByUsername(username); 
         if (cachedUser) return cachedUser;
 
-        const persistenceuser = await this.userPersistence.getByUsername(username);
-        if (persistenceuser) await this.userCache.create(persistenceuser);
+        const persistenceUser = await this.userPersistence.getByUsername(username);
+        if (persistenceUser) await this.userCache.create(persistenceUser);
 
-        return persistenceuser;
+        return persistenceUser;
     }
 }

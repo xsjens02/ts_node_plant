@@ -11,23 +11,32 @@ export class MongoService implements IMongoService {
     private dbName: string;
 
     constructor(@inject('MongoConfig') config: MongoConfig) {
+        // Initialize connection parameters from injected config
         this.url = config.connectionUrl;
         this.dbName = config.databaseName;
     }
 
+    /**
+     * Connects to the MongoDB server and selects the database.
+     * If already connected, it will not reconnect.
+     */
     async connect(): Promise<void> {
-        if (this.db) return;
+        if (this.db) return; // Already connected
 
         try {
             this.client = new MongoClient(this.url);
-            await this.client.connect();
-            this.db = this.client.db(this.dbName);
+            await this.client.connect(); // Establish connection
+            this.db = this.client.db(this.dbName); // Select database
         } catch(e) {
             console.error("Error trying to connect to Mongo", e);
-            throw e;
+            throw e; 
         }
     }
 
+    /**
+     * Returns the MongoDB collection with the specified name.
+     * Throws an error if the database connection has not been established.
+     */
     getCollection<T>(collectionName: string): Collection<T> {
         if (!this.db) {
             throw new Error("Mongo is not connected. Please call connect() first.");

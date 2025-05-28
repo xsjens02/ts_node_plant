@@ -4,6 +4,12 @@ import { JWTService } from "./JWTSerivce.js";
 import { JWTServiceConfig } from "./config/JWTServiceConfig.js";
 
 export class JWTServiceFactory {
+    /**
+     * Creates an instance of IJWTService according to the given config.
+     * - config: Configuration object containing token type, secret key, expiration time, issuer, and audience
+     * Returns an instance of IJWTService.
+     * Throws an error if token type is unsupported.
+     */
     static create(config: JWTServiceConfig): IJWTService {
         switch(config.tokenType) {
             case ETokenType.STANDARD:

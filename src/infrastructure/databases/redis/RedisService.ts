@@ -8,10 +8,19 @@ export class RedisService implements IRedisService {
     private client?: RedisClientType<RedisModules, RedisFunctions, RedisScripts>;
     private url: string;
 
+    /**
+     * Initializes the Redis service with the given configuration.
+     * - config: Configuration object containing Redis connection URL
+     */
     constructor(@inject('RedisConfig') config: RedisConfig) {
         this.url = config.connectionUrl;
     }
 
+    /**
+     * Connects to the Redis server if not already connected.
+     * Sets up error handling and establishes the client connection.
+     * Throws an error if connection fails.
+     */
     async connect(): Promise<void> {
         if (this.client) return;
 
@@ -25,6 +34,10 @@ export class RedisService implements IRedisService {
         }
     }
 
+    /**
+     * Returns the connected Redis client instance.
+     * Throws an error if called before connect().
+     */
     getClient(): RedisClientType<RedisModules, RedisFunctions, RedisScripts> {
         if (!this.client) {
             throw new Error("Redis is not connected. Please call connect() first.");

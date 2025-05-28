@@ -14,6 +14,13 @@ export class SignUpRController implements ISignUpRController {
     private cookieService: ICookieService;
     private cookieName: string;
 
+    /**
+     * Inject dependencies:
+     * - userManager: handles user creation and management
+     * - jwtService: generates JWT tokens for authentication
+     * - cookieService: manages cookies in the HTTP response
+     * - cookieName: the cookie key to store the token
+     */
     constructor(
         @inject('UserUseCaseManager') userManager: IUseCaseManager<User>, 
         @inject('JWTService') jwtService: IJWTService, 
@@ -26,6 +33,14 @@ export class SignUpRController implements ISignUpRController {
         this.cookieName = cookieName;
     }
 
+    /**
+     * Handles user signup and automatically logs in the user by:
+     * - validating input user data,
+     * - creating a new user record,
+     * - generating a JWT token,
+     * - setting the token as a cookie,
+     * - responding with success or error message.
+     */
     async signAndLogin(req: any, res: any): Promise<Response> {
         try {
             const user: User = req.body;
@@ -34,20 +49,21 @@ export class SignUpRController implements ISignUpRController {
 
             const createdUser = await this.userManager.create(user);
             if (!createdUser)
-                return res.status(500).json({ error: "User creating failed." });
+                return res.status(500).json({ error: "User creation failed." });
 
             const payload: JWTUserPayload = {
                 _id: createdUser._id,
                 name: createdUser.name,
                 role: createdUser.role
-            }
+            };
+
             const token = this.jwtService.generateToken(payload);
             this.cookieService.createOrUpdateCookie(res, this.cookieName, token);
-            
+
             return res.status(200).json({ message: "Sign up successful." });
         } catch (e) {
             console.log(e);
-            res.status(500).json({ error: "Something went wrong trying to sign up new user." });
+            return res.status(500).json({ error: "Something went wrong trying to sign up new user." });
         }
     }
 }

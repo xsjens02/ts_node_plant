@@ -7,6 +7,12 @@ export class JWTHandler extends BaseHandler {
     private cookieService: ICookieService;
     private jwtService: IJWTService; 
 
+    /**
+     * Initialize JWTHandler with required services and token name
+     * - cookieService: manages retrieval of cookies from requests
+     * - jwtService: verifies authenticity of JWT tokens
+     * - tokenName: cookie key where JWT token is stored
+     */
     constructor(cookieService: ICookieService, jwtService: IJWTService, tokenName: string) {
         super(); 
         this.cookieService = cookieService;
@@ -14,7 +20,16 @@ export class JWTHandler extends BaseHandler {
         this.tokenName = tokenName;
     }
 
-    handle(req:any, res:any): boolean {
+    /**
+     * Handle authorization by:
+     * 1. Extracting the token from cookies
+     * 2. Validating the token's authenticity and expiry
+     * 3. Returning 401 Unauthorized response if token is missing or invalid
+     * 4. Delegating to BaseHandler for further processing if valid
+     *
+     * @returns boolean - true if token is valid and processing should continue, false otherwise
+     */
+    handle(req: any, res: any): boolean {
         const token = this.cookieService.getCookie<string>(req, this.tokenName);
 
         if (!token) {
@@ -28,6 +43,7 @@ export class JWTHandler extends BaseHandler {
             return false;
         }
 
+        // Continue handling in base class
         return super.handle(req, res);
     }
 }

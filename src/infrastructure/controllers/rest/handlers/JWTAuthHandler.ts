@@ -11,6 +11,13 @@ export class JWTAuthHandler extends BaseHandler {
     private cookieName: string;
     private authLevel: number;
 
+    /**
+     * Initialize JWTAuthHandler with dependencies and config values:
+     * - cookieService: handles cookie extraction from requests
+     * - jwtService: verifies and decodes JWT tokens
+     * - cookieName: the cookie key where the JWT token is stored
+     * - authLevel: minimum authorization level required for access
+     */
     constructor(
         cookieService: ICookieService, 
         jwtService: IJWTService, 
@@ -24,7 +31,17 @@ export class JWTAuthHandler extends BaseHandler {
         this.authLevel = authLevel;
     }
 
-    handle(req:any, res:any): boolean {
+    /**
+     * Handle incoming request authorization by:
+     * 1. Retrieving the JWT token from cookies
+     * 2. Validating the token's authenticity and expiry
+     * 3. Decoding token payload and checking user's authorization level
+     * 4. Returning 401 Unauthorized if any checks fail
+     * 5. Otherwise, delegating to BaseHandler for further processing
+     *
+     * @returns boolean - true if authorized and processing continues, false otherwise
+     */
+    handle(req: any, res: any): boolean {
         const token = this.cookieService.getCookie<string>(req, this.cookieName);
 
         if (!token) {
@@ -44,6 +61,7 @@ export class JWTAuthHandler extends BaseHandler {
             return false;
         }
 
+        // Delegate to BaseHandler for any additional handling
         return super.handle(req, res);
     }
 }

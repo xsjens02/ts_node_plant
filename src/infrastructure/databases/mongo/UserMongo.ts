@@ -11,6 +11,9 @@ export class UserMongo extends BaseMongo<User> implements IUserPersistence {
         super(mongoService, "users");
     }
 
+    /**
+     * Retrieves a User document by the username field.
+     */
     async getByUsername(username: string): Promise<User | null> {
         return await this.collection.findOne({ userName: username });
     }

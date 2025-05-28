@@ -6,5 +6,5 @@ export interface User extends Identification {
     role: EAuthRole;
     email: string;
     userName: string;
-    password: string; 
+    password?: string; 
 }

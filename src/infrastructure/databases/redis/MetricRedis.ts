@@ -12,9 +12,13 @@ export class MetricRedis extends BaseRedis<Metric> implements ICache<Metric> {
         super(redisService, 'metric');
     }
 
+    /**
+     * Retrieves a Metric entity by id from Redis.
+     * Parses the stored JSON and converts string _id and customPlantId fields to ObjectId.
+     * Returns the entity or null if not found or parse fails.
+     */
     async get(id: string): Promise<Metric | null> {
         const key = `${this.entityName}:${id}`;
-                
         const entityString = await this.client.get(key);
         if (!entityString) return null;
 
@@ -27,12 +31,16 @@ export class MetricRedis extends BaseRedis<Metric> implements ICache<Metric> {
         }
     }
 
+    /**
+     * Converts specific string fields (_id, customPlantId) in the object to MongoDB ObjectId.
+     * Returns the updated object.
+     */
     private convertObjId(parsedObj: object): object | null {
         for (const key in parsedObj) {
             const value = parsedObj[key];
-            if(key === '_id' &&typeof value === "string")
+            if (key === '_id' && typeof value === "string")
                 parsedObj[key] = new ObjectId(value);
-            if(key === 'customPlantId' && typeof value === "string")
+            if (key === 'customPlantId' && typeof value === "string")
                 parsedObj[key] = new ObjectId(value);
         }
         return parsedObj;

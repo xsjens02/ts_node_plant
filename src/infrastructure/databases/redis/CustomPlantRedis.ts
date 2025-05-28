@@ -12,9 +12,13 @@ export class CustomPlantRedis extends BaseRedis<CustomPlant> implements ICache<C
         super(redisService, 'custom_plant');
     }
 
+    /**
+     * Retrieves a CustomPlant entity by id from Redis.
+     * Parses the stored JSON and converts any string _id fields to ObjectId.
+     * Returns the entity or null if not found or parse fails.
+     */
     async get(id: string): Promise<CustomPlant | null> {
         const key = `${this.entityName}:${id}`;
-                
         const entityString = await this.client.get(key);
         if (!entityString) return null;
 
@@ -27,13 +31,17 @@ export class CustomPlantRedis extends BaseRedis<CustomPlant> implements ICache<C
         }
     }
 
+    /**
+     * Recursively converts any string '_id' fields in the object to MongoDB ObjectId.
+     * Returns the updated object.
+     */
     private convertObjId(parsedObj: object): object | null {
         for (const key in parsedObj) {
             const value = parsedObj[key];
-            if(key === '_id' &&typeof value === "string")
+            if (key === '_id' && typeof value === "string")
                 parsedObj[key] = new ObjectId(value);
-            else if(typeof value === 'object' && value !== null)
-                this.convertObjId(value)
+            else if (typeof value === 'object' && value !== null)
+                this.convertObjId(value);
         }
         return parsedObj;
     }

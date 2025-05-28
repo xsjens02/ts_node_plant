@@ -12,6 +12,10 @@ export class CustomPlantMongo extends BaseMongo<CustomPlant> implements ICustomP
         super(mongoService, "custom_plants");
     }
 
+    /**
+     * Retrieves all CustomPlant entities for a given user by userId.
+     * Uses MongoDB ObjectId to query the collection.
+     */
     async getAllByUser(userId: string): Promise<CustomPlant[]> {
         return await this.collection
             .find({ userId: new ObjectId(userId) })

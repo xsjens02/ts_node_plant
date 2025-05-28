@@ -8,7 +8,9 @@ import { ICustomPlantPersistence } from "../databases/interfaces/persistence/ICu
 
 @injectable()
 export class MetricRepository extends BaseRepository<Metric> implements IMetricRepository {
+    // Persistence service for Metric-specific data access
     private metricPersistence: IMetricPersistence;
+    // Persistence service for CustomPlant entities, used for updates
     private customPlantPersistence: ICustomPlantPersistence;
     
     constructor(
@@ -16,25 +18,34 @@ export class MetricRepository extends BaseRepository<Metric> implements IMetricR
         @inject('MetricMongo') metricPersistence: IMetricPersistence,
         @inject('CustomPlantMongo') customPlantPersistence: ICustomPlantPersistence
     ) {
+        // Pass cache and persistence to base repository
         super(metricCache, metricPersistence);
         this.metricPersistence = metricPersistence;
         this.customPlantPersistence = customPlantPersistence;
     }
 
+    /**
+     * Create a new Metric entity, then update the related CustomPlant
+     * with the latest metric data.
+     */
     async create(entity: Metric): Promise<Metric> {
         const newMetric = await this.persistenceService.create(entity);
-        const customPlant = await this.customPlantPersistence.get(entity.customPlantId.toString());
 
-        customPlant.latestMetric = newMetric;
-        await this.customPlantPersistence.update(customPlant._id.toString(), customPlant);
+        const customPlant = await this.customPlantPersistence.get(entity.customPlantId.toString());
+        if (customPlant) {
+            customPlant.latestMetric = newMetric;
+            await this.customPlantPersistence.update(customPlant._id.toString(), customPlant);
+        }
 
         return newMetric;
     }
 
+    // Retrieve all metrics linked to a specific CustomPlant
     async getAllByCustomPlant(customPlantId: string): Promise<Metric[]> {
         return await this.metricPersistence.getAllByCustomPlant(customPlantId);
     }
 
+    // Retrieve the latest metrics for a specific CustomPlant
     async getLatestByCustomPlant(customPlantId: string): Promise<Metric[]> {
         return await this.metricPersistence.getLatestByCustomPlant(customPlantId);
     }

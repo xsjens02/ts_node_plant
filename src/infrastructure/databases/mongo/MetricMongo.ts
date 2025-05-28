@@ -12,12 +12,20 @@ export class MetricMongo extends BaseMongo<Metric> implements IMetricPersistence
         super(mongoService, "metrics");
     }
 
+    /**
+     * Retrieves all Metric documents associated with a specific CustomPlant by its ID.
+     * Converts the customPlantId string to a MongoDB ObjectId for querying.
+     */
     async getAllByCustomPlant(customPlantId: string): Promise<Metric[]> {
         return await this.collection
             .find({ customPlantId: new ObjectId(customPlantId) })
             .toArray();
     }
 
+    /**
+     * Retrieves the latest 5 Metric documents for a given CustomPlant, sorted by dateTimeStamp descending.
+     * This provides recent metric data for the specified CustomPlant.
+     */
     async getLatestByCustomPlant(customPlantId: string): Promise<Metric[]> {
         return await this.collection
             .find({ customPlantId: new ObjectId(customPlantId) })

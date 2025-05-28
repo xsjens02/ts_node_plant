@@ -5,6 +5,10 @@ import { ECookieType } from "./enums/ECookieType.js";
 import { CookieServiceConfig } from "./config/CookieServiceConfig.js";
 
 export class CookieServiceFactory {
+    /**
+     * Creates an instance of ICookieService based on the provided config.
+     * - config: Configuration object for cookie service creation
+     */
     static create(config: CookieServiceConfig): ICookieService {
         switch(config.cookieType) {
             case ECookieType.STANDARD:
