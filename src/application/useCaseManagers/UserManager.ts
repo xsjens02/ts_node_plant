@@ -21,7 +21,6 @@ export class UserManager extends BaseUseCaseManager<User> implements IUseCaseMan
 
     // Create a new user with a hashed password
     async create(entity: User): Promise<User | null> {
-        console.log("password: " + entity.password);
         const hashedPassword = await this.encryptionService.encrypt(entity.password);
         entity.password = hashedPassword;
 
