@@ -50,7 +50,7 @@ export function configure() {
     container.registerInstance<Partial<Record<keyof IRestController<CustomPlant>, IHandler>>>('CustomPlantAuthHandlers', customPlantAuthHandlers);
 
     // ----- Generic Plant Handlers -----
-    const genericPlantHandler = buildAuthHandler(10);
+    const genericPlantHandler = buildAuthHandler(20);
     const genericPlantAuthHandlers = buildUniformHandlers<GenericPlant>(genericPlantHandler);
     container.registerInstance<Partial<Record<keyof IRestController<GenericPlant>, IHandler>>>('GenericPlantAuthHandlers', genericPlantAuthHandlers);
 
