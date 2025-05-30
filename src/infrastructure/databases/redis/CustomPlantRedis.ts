@@ -38,7 +38,7 @@ export class CustomPlantRedis extends BaseRedis<CustomPlant> implements ICache<C
     private convertObjId(parsedObj: object): object | null {
         for (const key in parsedObj) {
             const value = parsedObj[key];
-            if (key === '_id' && typeof value === "string")
+            if ((key === '_id' || key === "userId") && typeof value === "string")
                 parsedObj[key] = new ObjectId(value);
             else if (typeof value === 'object' && value !== null)
                 this.convertObjId(value);
