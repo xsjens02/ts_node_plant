@@ -13,6 +13,20 @@ export class MetricMongo extends BaseMongo<Metric> implements IMetricPersistence
     }
 
     /**
+     * Creates a new Metric document in MongoDB.
+     * Converts the customPlantId string to a MongoDB ObjectId before saving.
+     * Returns the saved Metric.
+     */
+    async create(entity: Metric): Promise<Metric> {
+        const entityWithObjectId: Metric = {
+            ...entity,
+            customPlantId: new ObjectId(entity.customPlantId),
+        };
+
+        return await super.create(entityWithObjectId);
+    }
+
+    /**
      * Retrieves all Metric documents associated with a specific CustomPlant by its ID.
      * Converts the customPlantId string to a MongoDB ObjectId for querying.
      */

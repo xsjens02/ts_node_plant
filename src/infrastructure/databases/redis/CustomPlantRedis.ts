@@ -32,13 +32,13 @@ export class CustomPlantRedis extends BaseRedis<CustomPlant> implements ICache<C
     }
 
     /**
-     * Recursively converts any string '_id' fields in the object to MongoDB ObjectId.
+     * Converts specific string fields (_id, userId, customPlantId) in the object to MongoDB ObjectId.
      * Returns the updated object.
      */
     private convertObjId(parsedObj: object): object | null {
         for (const key in parsedObj) {
             const value = parsedObj[key];
-            if ((key === '_id' || key === "userId") && typeof value === "string")
+            if ((key === '_id' || key === "userId" || key == 'customPlantId') && typeof value === "string")
                 parsedObj[key] = new ObjectId(value);
             else if (typeof value === 'object' && value !== null)
                 this.convertObjId(value);

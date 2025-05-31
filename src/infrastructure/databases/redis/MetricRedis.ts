@@ -38,9 +38,7 @@ export class MetricRedis extends BaseRedis<Metric> implements ICache<Metric> {
     private convertObjId(parsedObj: object): object | null {
         for (const key in parsedObj) {
             const value = parsedObj[key];
-            if (key === '_id' && typeof value === "string")
-                parsedObj[key] = new ObjectId(value);
-            if (key === 'customPlantId' && typeof value === "string")
+            if ((key === '_id' || key == 'customPlantId') && typeof value === "string")
                 parsedObj[key] = new ObjectId(value);
         }
         return parsedObj;

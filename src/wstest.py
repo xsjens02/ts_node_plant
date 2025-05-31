@@ -22,7 +22,19 @@ if login_response.status_code != 200:
 print("Logged in successfully")
 print()
 
-# 2. Get generic plant id
+# 2. Get user id
+all_users_response = session.get(f"{BASE_URL}/api/users")
+if all_users_response.status_code != 201:
+    print("Failed to get all users:", all_users_response.text)
+    exit()
+
+users = all_users_response.json()
+current_user = users[0]
+user_id = current_user["_id"]
+print("Got user id:", user_id)
+print()
+
+# 3. Get generic plant
 gp_response = session.get(f"{BASE_URL}/api/genericplants")
 if gp_response.status_code != 201:
     print("Failed to get generic plants:", gp_response.text)
@@ -34,9 +46,10 @@ generic_plant_id = first_gp["_id"]
 print("Got first generic plant:", generic_plant_id)
 print()
 
-# 3. Create custom plant
+# 4. Create custom plant
 custom_plant_payload = {
-    "genericPlant": generic_plant_id,
+    "genericPlant": first_gp,
+    "userId": user_id,
     "name": "Money Tree",
     "imageUrl": "www.example.com",
     "potVolume": 3,
@@ -53,7 +66,7 @@ custom_plant_id = custom_plant["_id"]
 print("Created custom plant:", custom_plant_id)
 print()
 
-# 4. Setup SocketIO client
+# 5. Setup SocketIO client
 sio = socketio.Client()
 
 @sio.event
